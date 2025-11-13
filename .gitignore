@@ -1,0 +1,122 @@
+# .gitignore for Kanban project (frontend + backend)
+# Place this file at the repository root.
+
+# ------------------------
+# Node / JS
+# ------------------------
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+# Optional lock files (uncomment if you prefer not to commit lockfiles)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# ------------------------
+# Build / output
+# ------------------------
+dist/
+build/
+**/dist/
+**/build/
+frontend/dist/
+backend/dist/
+
+# Vite / preview
+.vite/
+out/
+
+# ------------------------
+# Environment / secrets
+# ------------------------
+.env
+.env.*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.envrc
+.env.*.secret
+secrets.env
+*.pem
+*.key
+*.p12
+
+# ------------------------
+# Project-specific data files
+# ------------------------
+# Excel and data files that often contain sensitive or environment-specific content
+backend/data/*.xlsx
+backend/data/*.xls
+backend/data/*.csv
+# If you want to keep a committed sample xlsx, remove the above line or add an explicit exception:
+# !backend/data/letters-sample.xlsx
+
+# ------------------------
+# Logs / runtime
+# ------------------------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+*.tmp
+*.temp
+*.pid
+*.seed
+
+# ------------------------
+# Tests / coverage
+# ------------------------
+coverage/
+coverage-final.json
+.vscode-test/
+
+# ------------------------
+# OS / Editor
+# ------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+*.iml
+
+# Mac, Linux temp
+*.swp
+*~
+.project
+.cache/
+.history/
+
+# ------------------------
+# Misc / generated
+# ------------------------
+*.bak
+*.orig
+*.rej
+*.swo
+
+# Docker
+docker-compose.override.yml
+*.log
+
+# Ignore local npm global installs (if any)
+.npm/
+
+# JetBrains
+out/
+.idea/
+
+# Keep build artifacts in local dev only
+.cache/
+
+# End of .gitignore

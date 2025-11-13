@@ -1,0 +1,27 @@
+{
+  "name": "kanban-backend",
+  "version": "1.0.0",
+  "description": "Backend for Kanban-style letter notes. Reads letters from a fixed Excel file and exposes a simple API.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "kanban",
+    "excel",
+    "letters",
+    "notes",
+    "api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kanban — Sticky Letters</title>
+  <meta name="description" content="Modern sticky-note style board that displays letters read from the backend Excel file." />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0f1724;
+      --card-bg: linear-gradient(180deg, #fff 0%, #fff 100%);
+      --muted: #94a3b8;
+      --accent: #f59e0b; /* amber for sticky feel */
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(99,102,241,0.08), transparent),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(16,185,129,0.04), transparent),
+                  #0b1220;
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      -webkit-text-size-adjust:100%;
+    }
+
+    .app-shell {
+      max-width:1200px;
+      margin:28px auto;
+      padding:28px;
+    }
+
+    header {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:20px;
+    }
+
+    .title {
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+
+    .logo {
+      width:52px;
+      height:52px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(135deg,#6366f1,#06b6d4);
+      box-shadow: 0 6px 18px rgba(3,7,18,0.6);
+      font-weight:700;
+      color:white;
+      font-size:20px;
+    }
+
+    h1 {
+      font-size:20px;
+      margin:0;
+      color: #f8fafc;
+      letter-spacing: -0.2px;
+    }
+
+    p.lead {
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .controls {
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .chip {
+      padding:8px 12px;
+      background: rgba(255,255,255,0.04);
+      color:var(--muted);
+      border-radius:999px;
+      font-size:13px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Loading skeleton centered while React mounts */
+    .loading {
+      height: calc(100vh - 160px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 6px 22px rgba(2,6,23,0.6);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .loader {
+      text-align:center;
+      color:var(--muted);
+    }
+
+    .spinner {
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      border:6px solid rgba(255,255,255,0.06);
+      border-top-color: rgba(255,255,255,0.16);
+      margin:0 auto 12px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Small footer note */
+    .hint {
+      margin-top:10px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* A minimal grid placeholder so the page doesn't feel blank */
+    .placeholder-grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap:18px;
+      padding:18px;
+      width:100%;
+    }
+
+    .stick {
+      min-height:110px;
+      padding:12px;
+      border-radius:10px;
+      background: linear-gradient(180deg,#fff 0%, #fff 100%);
+      color:#08122a;
+      transform: rotate(-2deg);
+      box-shadow: 0 8px 20px rgba(3,7,18,0.6);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      font-weight:600;
+      line-height:1.2;
+      white-space:pre-wrap;
+      overflow:hidden;
+    }
+
+    /* Small responsive tweaks */
+    @media (max-width:640px){
+      .app-shell { padding:16px; margin:18px auto; }
+      h1 { font-size:18px; }
+      .logo { width:46px; height:46px; font-size:18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <div class="title">
+        <div class="logo" aria-hidden="true">KB</div>
+        <div>
+          <h1>Kanban — Sticky Letters</h1>
+          <p class="lead">Displays letters from a backend Excel source as randomized sticky notes.</p>
+        </div>
+      </div>
+
+      <div class="controls" aria-hidden="true">
+        <div class="chip">Polling: every 10s</div>
+        <div class="chip">Read-only view</div>
+      </div>
+    </header>
+
+    <!-- React will mount into this element. Keep a visually reasonable loading state. -->
+    <main id="root" role="main">
+      <section class="loading" aria-live="polite">
+        <div class="loader">
+          <div class="spinner" aria-hidden="true"></div>
+          <div style="font-weight:600;color:#e6eef8">Loading notes…</div>
+          <div class="hint">If nothing appears, ensure the backend is running and the Excel file is accessible.</div>
+        </div>
+      </section>
+
+      <!-- Static placeholder grid (improves perceived performance before JS loads) -->
+      <section style="margin-top:18px;">
+        <div class="placeholder-grid" aria-hidden="true">
+          <div class="stick" style="background:linear-gradient(180deg,#fff7cc,#fff3b0); transform: rotate(-3deg)">Design meeting notes</div>
+          <div class="stick" style="background:linear-gradient(180deg,#ffdce0,#ffd0d6); transform: rotate(2deg)">Call Alice</div>
+          <div class="stick" style="background:linear-gradient(180deg,#d8f3dc,#bfe9c8); transform: rotate(-1deg)">Buy milk</div>
+          <div class="stick" style="background:linear-gradient(180deg,#e0e7ff,#c7d2fe); transform: rotate(1deg)">Fix signup bug</div>
+        </div>
+      </section>
+    </main>
+
+    <footer style="margin-top:20px;color:var(--muted);font-size:13px;">
+      <div>Tip: Frontend polls to get the latest data. The backend reads a fixed Excel fil.</div>
+    </footer>
+  </div>
+
+  <!-- Vite / React entry point -->
+  <script type="module" src="/src/main.jsx"></script>
+
+  <!-- No-JS fallback -->
+  <noscript></noscript>
+  </noscript>
+</body>
+</html>
